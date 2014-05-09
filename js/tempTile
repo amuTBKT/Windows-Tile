@@ -1,0 +1,108 @@
+(function(){
+
+	var tileWidth = 200, tileHeight = 200;
+
+	var tile = document.getElementsByClassName("tile multiple")[0];
+
+	var tileS = document.getElementsByClassName("tile single")[0];
+	var tileSArray = [tileS.getElementsByClassName("image")[0].getElementsByTagName('figure')[0]];
+	var imageSArray = ["file:///D:/Web%20Projects/iOS%20Icon%20Plugin/images/Tiles/sTile.png", "file:///D:/Web%20Projects/iOS%20Icon%20Plugin/images/Tiles/sTile.png",
+						"file:///D:/Web%20Projects/iOS%20Icon%20Plugin/images/Tiles/sTile.png", "file:///D:/Web%20Projects/iOS%20Icon%20Plugin/images/Tiles/sTile.png"];
+	var timerS;
+
+	var imageArray = ["file:///D:/Web%20Projects/iOS%20Icon%20Plugin/images/Tiles/tile1.png", "file:///D:/Web%20Projects/iOS%20Icon%20Plugin/images/Tiles/tile2.png", 
+						"file:///D:/Web%20Projects/iOS%20Icon%20Plugin/images/Tiles/tile3.png", "file:///D:/Web%20Projects/iOS%20Icon%20Plugin/images/Tiles/tile4.png"];
+
+	var tileObject = new Tile(tile);
+	tileObject.loadTile(imageArray, "back", -1);
+
+	loadTile(tileSArray, imageSArray, "front", -1, timerS);
+
+	function loadTile(tileArray, imageArray, mode, pos, timer){
+		var counter = pos;
+		if (timer){
+			clearTimeout(timer);
+		}
+
+		if (counter < tileArray.length - 1){
+			counter ++;
+		}
+		else {
+			clearTimeout(timer);
+			return false;
+		}
+
+		timer = setInterval(function(){
+			if (mode == "front"){
+				flipFront(tileArray[counter], imageArray[counter]);
+			}
+			else {
+				flipBack(tileArray[counter], imageArray[counter]);
+			}
+			loadTile(tileArray, imageArray, mode, counter, timer);
+
+		}, 1000);
+	}
+
+	function Tile(tile){
+		this.images = tile.getElementsByClassName("image")[0];
+		this.imageFigure = this.images.getElementsByTagName('figure');
+
+		this.firstImage = this.imageFigure[0];
+		this.secondImage = this.imageFigure[1];
+		if (this.secondImage != null){
+			this.thirdImage = this.imageFigure[2];
+			this.fourthImage = this.imageFigure[3];
+			this.tileArray = [this.firstImage, this.secondImage, this.thirdImage, this.fourthImage];
+		}
+		else {
+			this.tileArray = [this.firstImage];
+		}
+		
+		this.mode = "back";
+		this.timer = null;
+	}
+
+	Tile.prototype.flipFront(image, background){
+		if (background){
+			var back = image.getElementsByClassName("back")[0];
+			back.style.backgroundImage = "url(" + background + ")";
+		}
+		image.classList.add("rotateX");
+	};
+
+	Tile.prototype.flipBack(image, background){
+		if (background){
+			var back = image.getElementsByClassName("front")[0];
+			back.style.backgroundImage = "url(" + background + ")";
+		}
+		image.classList.add("rotateXX");
+	};
+
+	Tile.prototype.loadTile = function(imageArray, mode, pos){
+		var counter = pos;
+		if (this.timer){
+			clearTimeout(this.timer);
+		}
+
+		if (counter < this.tileArray.length - 1){
+			counter ++;
+		}
+		else {
+			clearTimeout(this.timer);
+			return false;
+		}
+
+		this.timer = setInterval(function(){
+			if (this.mode == "front"){
+				this.flipFront(this.tileArray[counter], imageArray[counter]);
+			}
+			else {
+				this.flipBack(this.tileArray[counter], imageArray[counter]);
+			}
+			this.loadTile(imageArray, mode, counter);
+
+		}, 1000);
+	};
+
+}());
