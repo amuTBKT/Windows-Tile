@@ -6,11 +6,10 @@
 
 	var tileS = document.getElementsByClassName("tile single")[0];
 
-	var imageSArray = ["file:///D:/Web%20Projects/iOS%20Icon%20Plugin/images/Tiles/sTile.png", "file:///D:/Web%20Projects/iOS%20Icon%20Plugin/images/Tiles/sTile.png",
-						"file:///D:/Web%20Projects/iOS%20Icon%20Plugin/images/Tiles/sTile.png", "file:///D:/Web%20Projects/iOS%20Icon%20Plugin/images/Tiles/sTile.png"];
+	var imageSArray = ["images/Tiles/sTile.png"];
 
-	var imageArray = ["file:///D:/Web%20Projects/iOS%20Icon%20Plugin/images/Tiles/tile1.png", "file:///D:/Web%20Projects/iOS%20Icon%20Plugin/images/Tiles/tile2.png", 
-						"file:///D:/Web%20Projects/iOS%20Icon%20Plugin/images/Tiles/tile3.png", "file:///D:/Web%20Projects/iOS%20Icon%20Plugin/images/Tiles/tile4.png"];
+	var imageArray = ["images/Tiles/tile1.png", "images/Tiles/tile2.png", 
+						"images/Tiles/tile3.png", "images/Tiles/tile4.png"];
 
 
 	var tileObject = new Tile(tile);

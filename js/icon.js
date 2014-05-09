@@ -56,7 +56,7 @@
 				}
 			}
 
-			var imageSrc = "file:///D:/Web%20Projects/iOS%20Icon%20Plugin/images/" + (title.getElementsByTagName('p')[0].innerHTML).trim() + "_icon.png";
+			var imageSrc = "images/" + (title.getElementsByTagName('p')[0].innerHTML).trim() + "_icon.png";
 			image.style.backgroundImage = "url(" + imageSrc + ")";
 			image.style.backgroundSize = '100% 100%';
 
