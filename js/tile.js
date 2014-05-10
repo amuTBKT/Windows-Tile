@@ -6,12 +6,13 @@
 
 	var tileS = document.getElementsByClassName("tile single")[0];
 
-	var imageSArray = ["images/Tiles/tile1.png", "images/Tiles/tile2.png", 
-						"images/Tiles/tile3.png", "images/Tiles/tile4.png", "images/Tiles/sTile.png", "images/Tiles/tile3.png"];
+	var imageSArray = ["images/Tiles/stile.png", "images/Tiles/sstile.png"];
+	var imageSSArray = ["images/Tiles/sstile0.png", "images/Tiles/sstile1.png", 
+						"images/Tiles/sstile2.png", "images/Tiles/sstile3.png", "images/Tiles/sstile.png"];
 
-	var imageArray = ["images/Tiles/tile1.png", "images/Tiles/tile2.png", 
-						"images/Tiles/tile3.png", "images/Tiles/tile4.png"];
+	var imageArray = ["images/Tiles/tile1.png", "images/Tiles/tile2.png", "images/Tiles/tile3.png", "images/Tiles/tile4.png"];
 
+	var imageSMArray = ["images/Tiles/sstile0.png", "images/Tiles/sstile1.png", "images/Tiles/sstile2.png", "images/Tiles/sstile3.png"];
 
 	var tileObject = new Tile(tile);
 	tileObject.loadTiles(imageArray);
@@ -20,7 +21,8 @@
 	tileObjectS.loadTiles(imageSArray);
 
 	tileS.onclick = function(e){
-		tileObject.loadTile(2, imageSArray, 500);
+		tileObjectS.loadTiles(imageSSArray);
+		tileObject.loadTiles(imageSMArray);
 	}
 
 	function Tile(tile){
@@ -115,7 +117,7 @@
 			clearTimeout(timer);
 		}
 
-		var position = (imageArray.length % tileArray.length);
+		var position = (imageArray.length % tileArray.length) - 1;
 
 		return position;
 	}
