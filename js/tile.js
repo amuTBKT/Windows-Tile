@@ -13,13 +13,13 @@
 
 
 	var tileObject = new Tile(tile);
-	tileObject.loadTile(imageArray);
+	tileObject.loadTiles(imageArray);
 
 	var tileObjectS = new Tile(tileS);
-	tileObjectS.loadTile(imageSArray);
+	tileObjectS.loadTiles(imageArray);
 
 	tileS.onclick = function(e){
-		tileObjectS.loadTile(imageArray);
+		tileObjectS.loadTiles(imageArray);
 	}
 
 	function Tile(tile){
@@ -30,37 +30,39 @@
 		this.firstImage = this.imageFigure[0];
 		this.secondImage = this.imageFigure[1];
 		if (this.secondImage != null){
+			this.isSingle = false;
 			this.thirdImage = this.imageFigure[2];
 			this.fourthImage = this.imageFigure[3];
 			this.tileArray = [this.firstImage, this.secondImage, this.thirdImage, this.fourthImage];
 		}
 		else {
+			this.isSingle = true;
 			this.tileArray = [this.firstImage];
 		}
-		
+
 		this.mode = "back";
 		this.timer = null;
 
-		this.loadTile = function(imageArray){
-			if (this.mode == "back"){
-				this.mode = "front";
+		this.loadTiles = function(imageArray){
+			if (!this.isSingle){
+				this.mode = flipMode(this.mode);
+				loadTiles(this.tileArray, imageArray, this.mode, -1, this.timer, 500 + 500 * (0.5 - 0.5 * Math.random()));
 			}
 			else {
-				this.mode = "back";
+				loadTile(this.tileArray, imageArray, this.mode, -1, this.timer, 500 + 500 * (0.5 - 0.5 * Math.random()));
 			}
-			loadTile(this.tileArray, imageArray, this.mode, -1, this.timer);
 		}
 
 		this.getTileArray = function(){
 			return this.tileArray;
 		}
-
-		/*tile.onclick = function(e){
-			console.log(this.tileArray);
-		}*/
 	}
 
-	function loadTile(tileArray, imageArray, mode, pos, timer){
+	function logg(){
+		console.log("Click");
+	}
+
+	function loadTiles(tileArray, imageArray, mode, pos, timer, delay){
 		var counter = pos;
 		if (timer){
 			clearTimeout(timer);
@@ -81,10 +83,47 @@
 			else {
 				flipBack(tileArray[counter], imageArray[counter]);
 			}
-			loadTile(tileArray, imageArray, mode, counter, timer);
+			loadTiles(tileArray, imageArray, mode, counter, timer, 2500 + 500 * (0.5 - 0.5 * Math.random()));
+		}, delay);
+	}
 
-		}, 1000);
+	function loadTile(tileArray, imageArray, mode, pos, timer, delay){
+		var counter = pos;
+		if (timer){
+			clearTimeout(timer);
+		}
+
+		if (counter < imageArray.length - 1){
+			counter ++;
+		}
+		else {
+			clearTimeout(timer);
+			return false;
+		}
+
+		mode = flipMode(mode);
+
+		timer = setInterval(function(){
+			if (mode == "front"){
+				flipFront(tileArray[0], imageArray[counter]);
+			}
+			else {
+				flipBack(tileArray[0], imageArray[counter]);
+			}
+			loadTile(tileArray, imageArray, mode, counter, timer, 2500 + 500 * (0.5 - 0.5 * Math.random()));
+
+		}, delay);
 	}	
+
+	function flipMode(mode){
+		if (mode == "back"){
+			mode = "front";
+		}
+		else {
+			mode = "back";
+		}
+		return mode;
+	}
 
 	function flipFront(image, background){
 		if (background){
