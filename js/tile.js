@@ -6,20 +6,21 @@
 
 	var tileS = document.getElementsByClassName("tile single")[0];
 
-	var imageSArray = ["images/Tiles/sTile.png"];
+	var imageSArray = ["images/Tiles/tile1.png", "images/Tiles/tile2.png", 
+						"images/Tiles/tile3.png", "images/Tiles/tile4.png", "images/Tiles/sTile.png"];
 
 	var imageArray = ["images/Tiles/tile1.png", "images/Tiles/tile2.png", 
-						"images/Tiles/tile3.png", "images/Tiles/tile4.png"];
+						"images/Tiles/tile3.png", "images/Tiles/tile4.png"];			
 
 
 	var tileObject = new Tile(tile);
-	tileObject.loadTiles(imageArray);
+	tileObject.loadTiles(imageSArray);
 
 	var tileObjectS = new Tile(tileS);
-	tileObjectS.loadTiles(imageArray);
+	tileObjectS.loadTiles(imageSArray);
 
 	tileS.onclick = function(e){
-		tileObjectS.loadTiles(imageArray);
+		tileObjectS.loadTiles(imageSArray);
 	}
 
 	function Tile(tile){
@@ -58,8 +59,8 @@
 		}
 	}
 
-	function logg(){
-		console.log("Click");
+	function logg(message){
+		console.log("" + message);
 	}
 
 	function loadTiles(tileArray, imageArray, mode, pos, timer, delay){
@@ -70,21 +71,37 @@
 
 		if (counter < tileArray.length - 1){
 			counter ++;
+
+			timer = setInterval(function(){
+				if (mode == "front"){
+					flipFront(tileArray[counter], imageArray[counter]);
+				}
+				else {
+					flipBack(tileArray[counter], imageArray[counter]);
+				}
+				loadTiles(tileArray, imageArray, mode, counter, timer, 2500 + 500 * (0.5 - 0.5 * Math.random()));
+			}, delay);
+
 		}
+
+		else if (counter < imageArray.length - 1){
+			counter++;
+			timer = setInterval(function(){
+				mode = flipMode(mode);
+				if (mode == "front"){
+					flipFront(tileArray[imageArray.length - counter - 1], imageArray[counter]);
+				}
+				else {
+					flipBack(tileArray[imageArray.length - counter - 1], imageArray[counter]);
+				}
+				loadTiles(tileArray, imageArray, mode, counter, timer, 2500 + 500 * (0.5 - 0.5 * Math.random()));
+			}, delay);
+		}
+
 		else {
 			clearTimeout(timer);
 			return false;
 		}
-
-		timer = setInterval(function(){
-			if (mode == "front"){
-				flipFront(tileArray[counter], imageArray[counter]);
-			}
-			else {
-				flipBack(tileArray[counter], imageArray[counter]);
-			}
-			loadTiles(tileArray, imageArray, mode, counter, timer, 2500 + 500 * (0.5 - 0.5 * Math.random()));
-		}, delay);
 	}
 
 	function loadTile(tileArray, imageArray, mode, pos, timer, delay){
