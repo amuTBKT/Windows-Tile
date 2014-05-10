@@ -53,6 +53,21 @@
 		this.timer = null;
 		this.position = -1;
 
+		this.setTiles = function(frontImage, backImage){
+			var i;
+			for (i = 0; i < this.tileArray.length; i++){
+				if (frontImage){
+					var front = this.tileArray[i].getElementsByClassName("front")[0];
+					front.style.backgroundImage = "url(" + frontImage[i] + ")";
+				}
+
+				if (backImage){
+					var back = this.tileArray[i].getElementsByClassName("back")[0];
+					back.style.backgroundImage = "url(" + backImage[i] + ")";
+				}
+			}
+		}
+
 		this.loadTiles = function(imageArray){
 			if (!this.isSingle){
 				this.position = loadTiles(this.tileArray, imageArray, this.mode, this.position, this.timer, 500 + 500 * (0.5 - 0.5 * Math.random()));
@@ -82,23 +97,8 @@
 			clearTimeout(timer);
 		}
 
-		if (counter < tileArray.length - 1){
-			counter ++;
-			mode[counter] = flipMode(mode[counter]);
-			timer = setInterval(function(){
-				if (mode[counter] == "front"){
-					flipFront(tileArray[counter], imageArray[counter]);
-				}
-				else {
-					flipBack(tileArray[counter], imageArray[counter]);
-				}
-
-				loadTiles(tileArray, imageArray, mode, counter, timer, 2500 + 500 * (0.5 - 0.5 * Math.random()));
-			}, delay);
-		}
-
 		// for images more than tiles
-		else if (counter < imageArray.length - 1){
+		if (counter < imageArray.length - 1){
 			counter++;
 			mode[counter % tileArray.length] = flipMode(mode[counter % tileArray.length]);
 			timer = setInterval(function(){
