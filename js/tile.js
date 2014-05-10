@@ -43,14 +43,15 @@
 
 		this.mode = "back";
 		this.timer = null;
+		this.position = -1;
 
 		this.loadTiles = function(imageArray){
 			if (!this.isSingle){
 				this.mode = flipMode(this.mode);
-				loadTiles(this.tileArray, imageArray, this.mode, -1, this.timer, 500 + 500 * (0.5 - 0.5 * Math.random()));
+				loadTiles(this.tileArray, imageArray, this.mode, this.position, this.timer, 500 + 500 * (0.5 - 0.5 * Math.random()));
 			}
 			else {
-				loadTile(this.tileArray, imageArray, this.mode, -1, this.timer, 500 + 500 * (0.5 - 0.5 * Math.random()));
+				this.mode = loadTile(this.tileArray, imageArray, this.mode, -1, this.timer, 500 + 500 * (0.5 - 0.5 * Math.random()));
 			}
 		}
 
@@ -71,7 +72,6 @@
 
 		if (counter < tileArray.length - 1){
 			counter ++;
-
 			timer = setInterval(function(){
 				if (mode == "front"){
 					flipFront(tileArray[counter], imageArray[counter]);
@@ -81,7 +81,6 @@
 				}
 				loadTiles(tileArray, imageArray, mode, counter, timer, 2500 + 500 * (0.5 - 0.5 * Math.random()));
 			}, delay);
-
 		}
 
 		else if (counter < imageArray.length - 1){
@@ -100,8 +99,15 @@
 
 		else {
 			clearTimeout(timer);
-			return false;
 		}
+
+		var position = Math.abs(tileArray.length - imageArray.length + 1);
+
+		if (position == 3){
+			position = -1;
+		}
+
+		return position;
 	}
 
 	function loadTile(tileArray, imageArray, mode, pos, timer, delay){
@@ -130,6 +136,13 @@
 			loadTile(tileArray, imageArray, mode, counter, timer, 2500 + 500 * (0.5 - 0.5 * Math.random()));
 
 		}, delay);
+
+		if (imageArray.length % 2 == 0){
+			return flipMode(mode);
+		}
+		else {
+			return mode;
+		}
 	}	
 
 	function flipMode(mode){
