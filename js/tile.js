@@ -3,6 +3,7 @@
 	var config;
 
 	var defaults = {
+		auto: true,
 		type: "single",
 		delay: 1000
 	}
@@ -16,69 +17,69 @@
 		this.isSingle = true;
 		this.timer = null;
 		this.position = -1;
-		
+		this.animating = false;		
 		this.tileArray = [];
 
-		this.tileContentArray = [];
-
 		this.init = function(){
-			if (config.type == "multi"){
-				var classArray = ["first", "second", "third", "fourth"];
-				this.element.addClass('tile').addClass('multiple');
-				this.isSingle = false;
-				this.firstTileContent = [];this.secondTileContent = [];this.thirdTileContent = [];this.fourthTileContent = [];
-				this.tileContentArray[0] = this.firstTileContent;this.tileContentArray[1] = this.secondTileContent;this.tileContentArray[2] = this.thirdTileContent;this.tileContentArray[3] = this.fourthTileContent;
-			}
-			else {
-				var classArray = ["first"];
-				this.element.addClass('tile').addClass('single');
-				this.firstTileContent = [];
-				this.tileContentArray[0] = this.firstTileContent;
+			if (config.auto){
+				if (config.type == "multi"){
+					var classArray = ["first", "second", "third", "fourth"];
+					this.element.addClass('tile').addClass('multiple');
+					this.isSingle = false;	
+				}
+				else {
+					var classArray = ["first"];
+					this.element.addClass('tile').addClass('single');
+				}
+
+				var imageDiv = $('<div/>').addClass('image').appendTo(this.element);
+				for (var i = 0; i < classArray.length; i++){
+					var fig = $('<figure/>').addClass(classArray[i]).appendTo(imageDiv);
+					var front = $('<div/>').addClass('front').appendTo(fig);
+					var back = $('<div/>').addClass('back').appendTo(fig);
+					this.mode[i] = "back";
+					this.tileArray[i] = fig;
+				}
 			}
 
-			var imageDiv = $('<div/>').addClass('image').appendTo(this.element);
+			else{
 
-			for (var i = 0; i < classArray.length; i++){
-				var fig = $('<figure/>').addClass(classArray[i]).appendTo(imageDiv);
-				var front = $('<div/>').addClass('front').appendTo(fig);
-				var back = $('<div/>').addClass('back').appendTo(fig);
-				this.mode[i] = "back";
-				this.tileArray[i] = fig;
-				this.tileContentArray[i][0] = front;
-				this.tileContentArray[i][1] = back;
 			}
+
 		}
 
 		this.setTiles = function(frontImage, backImage){
-			for (var i = 0; i < this.tileContentArray.length; i++){
+			for (var i = 0; i < this.tileArray.length; i++){
 				if (frontImage){
-					var front = this.tileContentArray[i][0];
+					var front = $(this.tileArray[i][0].getElementsByClassName('front'));
 					front.css('background-image', "url(" + frontImage[i] + ")");
 				}
 
 				if (backImage){
-					var back = this.tileContentArray[i][1];
+					var back = $(this.tileArray[i][0].getElementsByClassName('back'));
 					back.css('background-image', "url(" + backImage[i] + ")");
 				}
 			}
 		}
 
 		this.loadTiles = function(imageArray){
-			if (!this.isSingle){
-				this.position = loadTiles(this.tileArray, this.tileContentArray, imageArray, this.mode, this.position, this.timer);
-			}
-			else {
-				loadTiles(this.tileArray, this.tileContentArray, imageArray, this.mode, -1, this.timer);
-			}
+			//if (!this.isSingle){
+			//	this.position = loadTiles(this.tileArray, imageArray, this.mode, this.position, this.timer);
+			//}
+			//else {
+			loadTiles(this.tileArray, imageArray, this.mode, -1, this.timer);
+			//}
 		}
 
-		this.loadTile = function(tileNo, image, time){
-			loadTile(this.tileArray[tileNo], image, this.mode, -1, this.timer, time);
+		this.loadTile = function(tileNo, image){
+			var tempTileArray = [];
+			tempTileArray[0] = this.tileArray[tileNo];
+			loadTiles(tempTileArray, image, this.mode, -1, this.timer);
 		}
 	}
 
 	// for multi-image tile
-	function loadTiles(tileArray, tileContentArray, imageArray, mode, pos, timer){
+	function loadTiles(tileArray, imageArray, mode, pos, timer){
 		var counter = pos;
 		if (timer){
 			clearTimeout(timer);
@@ -90,13 +91,13 @@
 			mode[counter % tileArray.length] = flipMode(mode[counter % tileArray.length]);
 			timer = setInterval(function(){
 				if (mode[counter % tileArray.length] == "front"){
-					flipFront(tileArray, tileContentArray, imageArray[counter], counter % tileArray.length);
+					flipFront(tileArray[counter % tileArray.length], imageArray[counter]);
 				}
 				else {
-					flipBack(tileArray, tileContentArray, imageArray[counter], counter % tileArray.length);
+					flipBack(tileArray[counter % tileArray.length], imageArray[counter]);
 				}
 
-				loadTiles(tileArray, tileContentArray, imageArray, mode, counter, timer);
+				loadTiles(tileArray, imageArray, mode, counter, timer);
 			}, config.delay);
 		}
 
@@ -119,24 +120,26 @@
 		return mode;
 	}
 
-	function flipFront(tileArray, tileContentArray, background, counter){
+	function flipFront(tile, background){
 		if (background){
-			var back = tileContentArray[counter][1];
+			var back = $(tile[0].getElementsByClassName('back'));
 			back.css('background-image', "url(" + background + ")");
 		}
-		tileArray[counter].removeClass("rotateXX");
-		tileArray[counter].addClass("rotateX");
+		tile.removeClass("rotateXX");
+		tile.addClass("rotateX");
 	}
 
-	function flipBack(tileArray, tileContentArray, background, counter){
+	function flipBack(tile, background){
 		if (background){
-			var front = tileContentArray[counter][0];
+			var front = $(tile[0].getElementsByClassName('front'));
 			front.css('background-image', "url(" + background + ")");
 		}
-		tileArray[counter].removeClass("rotateX");
-		tileArray[counter].addClass("rotateXX");
+		tile.removeClass("rotateX");
+		tile.addClass("rotateXX");
 	}
 
+
+	// plugin methods
 	$.fn.initTile = function(options){
 		tile = new Tile(this, options);
 		tile.init();
@@ -148,9 +151,13 @@
 		return this.first();
 	};
 
-	$.fn.loadTile = function(imageArray){
+	$.fn.loadEntireTile = function(imageArray){
 		tile.loadTiles(imageArray);
 		return this.first();
+	};
+
+	$.fn.loadSingleTile = function(tileNo, imageArray){
+		tile.loadTile(tileNo, imageArray);
 	};
 
 }(jQuery));

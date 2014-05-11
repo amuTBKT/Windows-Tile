@@ -14,13 +14,14 @@
 <script type="text/javascript" src="js/tile.js"></script>
 
 <script type="text/javascript">
-	var img1 = ["images/Tiles/tile1.png", "images/Tiles/tile2.png", "images/Tiles/tile3.png", "images/Tiles/tile4.png"]; 
-	var img2 = ["images/Tiles/sstile0.png", "images/Tiles/sstile1.png", "images/Tiles/sstile2.png", "images/Tiles/sstile3.png"];
+	var img1 = ["images/tile1.png", "images/tile2.png", "images/tile3.png", "images/tile4.png"]; 
+	var img2 = ["images/sstile0.png", "images/sstile1.png", "images/sstile2.png", "images/sstile3.png"];
 	$('#mTile').initTile({
+		auto: true,
 		type: "multi",
 		delay: 4000
-	}).setTile(img1, null).loadTile(img2);
-	$('#sTile').initTile({delay:3000}).setTile(img1, null).loadTile(img2);
+	}).setTile(img1, null).loadSingleTile(2, img2);
+	$('#sTile').initTile({delay:3000}).setTile(img1, null).loadEntireTile(img2);
 </script>
 
 </body>

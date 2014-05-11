@@ -74,11 +74,10 @@
 .tile .image figure .front{
 	background: grey;
 	background-size: 100%;
-	background-size: 100%;
 }
 
 .tile .image figure .back{
-	background: #000;
+	background: #aaa;
 	background-size: 100%;
 	-webkit-transform: rotateX(180deg);
 }
