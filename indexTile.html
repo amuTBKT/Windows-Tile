@@ -5,41 +5,23 @@
 </head>
 <body style="background: black;">
 
-<div class="tile multiple" style="width:200px; height:200px; top:20px; left:20px">
-	<div class="image">
-		<figure class="first">
-			<div class="front"></div>
-			<div class="back"></div>
-		</figure>
-		<figure class="second">
-			<div class="front"></div>
-			<div class="back"></div>
-		</figure>
-		<figure class="third">
-			<div class="front"></div>
-			<div class="back"></div>
-		</figure>
-		<figure class="fourth">
-			<div class="front"></div>
-			<div class="back"></div>
-		</figure>
-	</div>
-	<div class="title"><p> Photos </p></div>
-</div>
+<div id="mTile" style="width:200px; height:200px; top:20px; left:20px"></div>
 
-<div class="tile single" style="width:200px; height:200px; top:20px; left:240px">
-	<div class="image">
-		<figure>
-			<div class="front"></div>
-			<div class="back"></div>
-		</figure>
-	</div>
-	<div class="title"><p> Camera </p></div>
-</div>
+<div id="sTile" style="width:200px; height:200px; top:20px; left:240px"></div>
 
 <!-- js scripts -->
+<script type="text/javascript" src="js/jquery-1.11.0.min.js"></script>
 <script type="text/javascript" src="js/tile.js"></script>
 
+<script type="text/javascript">
+	var img1 = ["images/Tiles/tile1.png", "images/Tiles/tile2.png", "images/Tiles/tile3.png", "images/Tiles/tile4.png"]; 
+	var img2 = ["images/Tiles/sstile0.png", "images/Tiles/sstile1.png", "images/Tiles/sstile2.png", "images/Tiles/sstile3.png"];
+	$('#mTile').initTile({
+		type: "multi",
+		delay: 4000
+	}).setTile(img1, null).loadTile(img2);
+	$('#sTile').initTile({delay:3000}).setTile(img1, null).loadTile(img2);
+</script>
 
 </body>
 </html>

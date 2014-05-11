@@ -52,6 +52,16 @@
 	left: 50%;
 }
 
+.multiple .image .fifth{
+	top: 0;
+	left: 100%;
+}
+
+.multiple .image .sixth{
+	top: 50%;
+	left: 100%;
+}
+
 /*-----------------------------*/
 
 .tile .image figure div{
@@ -63,6 +73,7 @@
 
 .tile .image figure .front{
 	background: grey;
+	background-size: 100%;
 	background-size: 100%;
 }
 
