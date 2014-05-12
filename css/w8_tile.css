@@ -72,7 +72,7 @@
 }
 
 .tile .image figure .front{
-	background: grey;
+	background: #aaa;
 	background-size: 100%;
 }
 
@@ -83,18 +83,18 @@
 }
 
 .tile .title{
+	margin: 0 0;
 	position: relative;
-	top: -30%;
-	left: 50%;
+	top: -20%;
 	z-index: 8;
-
-	opacity: 0;
 }
 
 .tile .title p{
+	margin: 0 0;
 	color: #000;
-	font-size: 1.4em;
+	font-size: 1.8em;
 	font-family: "Helvetica";
+	text-align: right;
 }
 
 .rotateX{
