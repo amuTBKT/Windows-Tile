@@ -53,6 +53,9 @@
 	left: 50%;
 }
 
+/* add .multiple .image. fifth and so on to increase the number of tiles */
+/* also change the .multiple .image figure width and height ratio according to new number of tiles */ 
+
 /*-----------------------------*/
 
 .tile .image figure div{
