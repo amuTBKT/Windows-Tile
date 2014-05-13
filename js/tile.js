@@ -13,12 +13,9 @@
 		this.mode = [];
 		this.tileArray = [];
 		this.isSingle = true;
-		this.timer = null;
-		this.position = -1;
+		this.interval = null;
+		this.startPosition = -1;
 		this.tileArray = [];
-		this.animationTimer;
-		this.animate = true;
-
 		this.init();
 	}
 
@@ -46,20 +43,24 @@
 			var titleDiv = $('<div/>').addClass('title').appendTo(this.element);
 			$('<p/>', {text: this.config.text}).appendTo(titleDiv);
 		}
-		/*else{
-			var htmlEl = $(element).first().find('tile');
-			console.log($(htmlEl));
+		else{
+			var htmlEl = this.element[0];
 			var imageNode = htmlEl.getElementsByClassName("image")[0];
 			var figureNode = imageNode.getElementsByTagName('figure');
 			for (i = 0; i < figureNode.length; i++){
-				tileArray[i] = figureNode[i];
+				this.tileArray[i] = $(figureNode[i]);
 				this.mode[i] = "back";
+				if (i > 0){
+					this.isSingle = false;
+				}
 			}
-		}*/
+			var titleNode = htmlEl.getElementsByClassName("title")[0];
+			var title = titleNode.getElementsByTagName('p')[0];
+			title.innerHTML = this.config.text;
+		}
 	};
 
 	Tile.prototype.setTiles = function(frontImage, backImage){
-		this.animate = false;
 		var i;
 		for (i = 0; i < this.tileArray.length; i++){
 			if (frontImage){
@@ -75,32 +76,34 @@
 	};
 
 	Tile.prototype.loadTiles = function(imageArray){
-		this.animate = true;
-		this.position = loadTiles(this.tileArray, imageArray, this.mode, this.position, this.timer);
+		this.startPosition = loadTiles(this.tileArray, imageArray, this.mode, this.startPosition, this.interval, this.config.delay);
 	};
 
 	Tile.prototype.loadTile = function(tileNo, image){
-		this.animate = true;
 		var tempTileArray = [];
-		tempTileArray[0] = this.tileArray[tileNo];
-		loadTiles(tempTileArray, image, this.mode, -1, this.timer);
+		tempTileArray[0] = this.tileArray[Math.min(tileNo, this.tileArray.length)];
+		if (!this.isSingle){
+			loadTiles(tempTileArray, image, this.mode, -1, this.interval, this.config.delay);
+		}
+		else {
+			loadTiles(this.tileArray, image, this.mode, this.startPosition, this.interval, this.config.delay);
+		}
 	};
 
 	Tile.prototype.stopAnimation = function(){
-		this.animate = false;
-		clearTimeout(this.animationTimer);
+		this.interval = clearTimeout(this.interval);
 	};
 
-	function loadTiles(tileArray, imageArray, mode, pos, timer){
+	function loadTiles(tileArray, imageArray, mode, pos, interval, delay){
 		var counter = pos;
-		if (timer){
-			clearTimeout(timer);
+		if (interval){
+			clearTimeout(interval);
 		}
 
-		if (counter < imageArray.length - 1){
+		if (imageArray && counter < imageArray.length - 1){
 			counter++;
 			mode[counter % tileArray.length] = flipMode(mode[counter % tileArray.length]);
-			timer = setInterval(function(){
+			interval = setInterval(function(){
 				if (mode[counter % tileArray.length] == "front"){
 					flipFront(tileArray[counter % tileArray.length], imageArray[counter]);
 				}
@@ -108,15 +111,29 @@
 					flipBack(tileArray[counter % tileArray.length], imageArray[counter]);
 				}
 
-				loadTiles(tileArray, imageArray, mode, counter, timer);
-			}, 2000);
+				loadTiles(tileArray, imageArray, mode, counter, interval, delay);
+			}, delay);
+		}
+
+		else if (!imageArray && counter < tileArray.length - 1){
+			counter++;
+			interval = setInterval(function(){
+				if (mode[counter] == "front"){
+					flipFront(tileArray[counter], null);
+				}
+				else {
+					flipBack(tileArray[counter], null);
+				}
+
+				loadTiles(tileArray, imageArray, mode, counter, interval, delay);
+			}, delay);
 		}
 
 		else {
-			clearTimeout(timer);
+			clearTimeout(interval);
 		}
 
-		var position = (imageArray.length % tileArray.length) - 1;
+		var position = (imageArray?((imageArray.length % tileArray.length) - 1):-1);
 
 		return position;
 	}
@@ -151,43 +168,35 @@
 
 	//////////////// plugin methods ////////////////
 
-	$.fn.initTile = function(options){
+	$.fn.setTile = function(options, frontImageArray, backImageArray){
 		return this.each(function(){
 			var tile = new Tile(this, options);
-
-			$(this).click(
-				function() {
-          		var img2 = ["images/sstile0.png", "images/sstile1.png", "images/sstile2.png", "images/sstile3.png"];
-          	 	tile.loadTiles(img2, null);
-          	});
-
+          	tile.setTiles(frontImageArray, backImageArray);
+          	$(this).click(function(){
+				tile.stopAnimation();
+			});
 		});
 	};
 
-	/*$.fn.setTile = function(frontImageArray, backImageArray){
-		tile.setTiles(frontImageArray, backImageArray);
-		return this.first();
+	$.fn.loadEntireTile = function(options, imageArray){
+		return this.each(function(){
+			var tile = new Tile(this, options);
+			tile.loadTiles(imageArray);
+			$(this).click(function(){
+				tile.stopAnimation();
+			});
+		});
 	};
 
-	$.fn.loadEntireTile = function(imageArray){
-		if (imageArray) tile.loadTiles(imageArray);
-		return this.first();
+	$.fn.loadSingleTile = function(options, tileNo, imageArray){
+		return this.each(function(){
+			var tile = new Tile(this, options);
+			if (tileNo > -1 && imageArray) tile.loadTile(tileNo, imageArray);
+			$(this).click(function(){
+				tile.stopAnimation();
+			});
+		});
 	};
-
-	$.fn.loadSingleTile = function(tileNo, imageArray){
-		if (tileNo > -1 && imageArray) tile.loadTile(tileNo, imageArray);
-		return this.first();
-	};
-
-	$.fn.stopAnimation = function(){
-		tile.stopAnimation();
-		return this.first();
-	};
-
-	$.fn.logg = function(){
-		console.log(tile.tileArray.length);
-		return this.first();
-	};*/
 
 	////////////////////////////////////////////////
 

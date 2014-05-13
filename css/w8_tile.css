@@ -1,6 +1,7 @@
 .tile{
 	position: absolute;
 	z-index: 6;
+	display: inline-block;
 
 	-webkit-user-select: none;
 	-webkit-transform-origin: 50% 50%;
@@ -50,16 +51,6 @@
 .multiple .image .fourth{
 	top: 50%;
 	left: 50%;
-}
-
-.multiple .image .fifth{
-	top: 0;
-	left: 100%;
-}
-
-.multiple .image .sixth{
-	top: 50%;
-	left: 100%;
 }
 
 /*-----------------------------*/

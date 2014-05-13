@@ -9,7 +9,7 @@
 
 <div id="sTile" style="width:200px; height:200px; top:20px; left:240px"></div>
 
-<!-- <div id="cTile" style="width:200px; height:200px; top:20px; left:460px" class="tile multiple">
+<div id="cTile" style="width:200px; height:200px; top:20px; left:460px" class="tile multiple">
 <div class="image">
 		<figure class="first">
 			<div class="front"></div>
@@ -27,24 +27,26 @@
 			<div class="front"></div>
 			<div class="back"></div>
 		</figure>
-		</div>
 	<div class="title"><p>Tile</p></div>
-</div>-->
+</div>
 
 <!-- js scripts -->
 <script type="text/javascript" src="js/jquery-1.11.0.min.js"></script>
 <script type="text/javascript" src="js/tile.js"></script>
 
 <script type="text/javascript">
-	var img1 = ["images/tile1.png", "images/tile2.png", "images/tile3.png", "images/tile4.png"]; 
+	var img1 = ["images/tile1.png", "images/tile2.png", "images/tile3.png", "images/tile4.png", "images/sstile0.png", "images/sstile1.png", "images/sstile2.png", "images/sstile3.png"]; 
 	var img2 = ["images/sstile0.png", "images/sstile1.png", "images/sstile2.png", "images/sstile3.png"];
-	$('#mTile').initTile({
-		type: "multi",
-		delay: 4000
-	});
-	$('#sTile').initTile({delay:3000, text:"SingleTile"});
+	var options = {
+		type:"multi",
+		delay: 2000
+	};
 
-	//$('cTile').initTile({auto:false, text:"Custom Tile"}).setTile(img1, null).loadEntireTile(img2);
+	$('#mTile').loadEntireTile(options, img1);
+	
+	$('#sTile').setTile({delay:3000, text:"SingleTile"}, img1, null).loadSingleTile({auto:false, delay:3000}, 2, img1);
+
+	$('#cTile').loadSingleTile({auto:false, text:"Custom Tile", delay:2000}, 2, img2).loadSingleTile({auto:false, text:"Custom Tile", delay:2000}, 1, img1);
 
 </script>
 
