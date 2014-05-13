@@ -10,7 +10,7 @@
 <div id="sTile" style="width:200px; height:200px; top:20px; left:240px"></div>
 
 <div id="cTile" style="width:200px; height:200px; top:20px; left:460px" class="tile multiple">
-<div class="image">
+	<div class="image">
 		<figure class="first">
 			<div class="front"></div>
 			<div class="back"></div>
@@ -27,6 +27,7 @@
 			<div class="front"></div>
 			<div class="back"></div>
 		</figure>
+	</div>
 	<div class="title"><p>Tile</p></div>
 </div>
 
@@ -39,14 +40,14 @@
 	var img2 = ["images/sstile0.png", "images/sstile1.png", "images/sstile2.png", "images/sstile3.png"];
 	var options = {
 		type:"multi",
-		delay: 2000
+		animDelay: 2000
 	};
 
 	$('#mTile').loadEntireTile(options, img1);
 	
-	$('#sTile').setTile({delay:3000, text:"SingleTile"}, img1, null).loadSingleTile({auto:false, delay:3000}, 2, img1);
+	$('#sTile').setTile({animDelay:3000, text:"SingleTile"}, img1, null).loadSingleTile({auto:false, animDelay:3000}, 2, img1);
 
-	$('#cTile').loadSingleTile({auto:false, text:"Custom Tile", delay:2000}, 2, img2).loadSingleTile({auto:false, text:"Custom Tile", delay:2000}, 1, img1);
+	$('#cTile').loadSingleTile({auto:false, text:"Custom Tile", animDelay:2000}, 2, img2).loadSingleTile({auto:false, text:"Custom Tile", animDelay:2000}, 1, img1);
 
 </script>
 

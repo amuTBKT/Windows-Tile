@@ -4,7 +4,7 @@
 		auto: true,
 		type: "single",
 		text: "Tile",
-		delay: 1000
+		animDelay: 1000
 	};
 
 	function Tile(element, options){
@@ -16,13 +16,14 @@
 		this.interval = null;
 		this.startPosition = -1;
 		this.tileArray = [];
+		this.isAnimating = false;
 		this.init();
 	}
 
 	Tile.prototype.init = function(){
 		if (this.config.auto){
 			if (this.config.type == "multi"){
-				var classArray = ["first", "second", "third", "fourth"];
+				var classArray = ["first", "second", "third", "fourth"];    // for more than 4 image tile customize this according to the changes in tile.css
 				this.element.addClass('tile').addClass('multiple');
 				this.isSingle = false;
 			}
@@ -61,6 +62,7 @@
 	};
 
 	Tile.prototype.setTiles = function(frontImage, backImage){
+		this.isAnimating = false;
 		var i;
 		for (i = 0; i < this.tileArray.length; i++){
 			if (frontImage){
@@ -76,25 +78,29 @@
 	};
 
 	Tile.prototype.loadTiles = function(imageArray){
-		this.startPosition = loadTiles(this.tileArray, imageArray, this.mode, this.startPosition, this.interval, this.config.delay);
+		this.isAnimating = true;
+		this.startPosition = loadTiles(this.tileArray, imageArray, this.mode, this.startPosition, this.interval, this.config.animDelay);
 	};
 
 	Tile.prototype.loadTile = function(tileNo, image){
 		var tempTileArray = [];
 		tempTileArray[0] = this.tileArray[Math.min(tileNo, this.tileArray.length)];
 		if (!this.isSingle){
-			loadTiles(tempTileArray, image, this.mode, -1, this.interval, this.config.delay);
+			this.isAnimating = true;
+			loadTiles(tempTileArray, image, this.mode, -1, this.interval, this.config.animDelay);
 		}
 		else {
-			loadTiles(this.tileArray, image, this.mode, this.startPosition, this.interval, this.config.delay);
+			this.isAnimating = true;
+			loadTiles(this.tileArray, image, this.mode, this.startPosition, this.interval, this.config.animDelay);
 		}
 	};
 
 	Tile.prototype.stopAnimation = function(){
+		this.isAnimating = false;
 		this.interval = clearTimeout(this.interval);
 	};
 
-	function loadTiles(tileArray, imageArray, mode, pos, interval, delay){
+	function loadTiles(tileArray, imageArray, mode, pos, interval, animDelay){
 		var counter = pos;
 		if (interval){
 			clearTimeout(interval);
@@ -111,8 +117,8 @@
 					flipBack(tileArray[counter % tileArray.length], imageArray[counter]);
 				}
 
-				loadTiles(tileArray, imageArray, mode, counter, interval, delay);
-			}, delay);
+				loadTiles(tileArray, imageArray, mode, counter, interval, animDelay);
+			}, animDelay);
 		}
 
 		else if (!imageArray && counter < tileArray.length - 1){
@@ -125,8 +131,8 @@
 					flipBack(tileArray[counter], null);
 				}
 
-				loadTiles(tileArray, imageArray, mode, counter, interval, delay);
-			}, delay);
+				loadTiles(tileArray, imageArray, mode, counter, interval, animDelay);
+			}, animDelay);
 		}
 
 		else {
