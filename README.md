@@ -21,13 +21,12 @@ $('element').loadEntireTile(options, imageArray); // to load the images in image
                                          
 $('element').loadSingleTile(options, tileNumber, imageArray); // to load a single tile
 
-// default options:
-
+// default configuration:
 var defaults = {
-		auto: true,
-		type: "single",
-		text: "Tile",
-		animDelay: 1000
+	auto: true,
+	type: "single",
+	text: "Tile",
+	animDelay: 1000
 };
 ````
 
@@ -38,8 +37,7 @@ var defaults = {
 
 ````javascript
 // auto = true is default configuration 
-$('#autTile').setTile({type:"multi", auto:true, text:"Auto Tile", animDelay:2000}, frontImageArray, backImageArray);
-
+$('#autoTile').setTile({type:"multi", auto:true, text:"Auto Tile", animDelay:2000}, frontImageArray, backImageArray);
 // type = "multi" for 4 image tile
 // type = "single" for 1 image tile
 ````
@@ -48,7 +46,7 @@ $('#autTile').setTile({type:"multi", auto:true, text:"Auto Tile", animDelay:2000
 ### using our own layout (instead of auto generate):
 ````html
 <div id="customTile" style="width:200px; height:200px; top:10px; left:10px;">  <!-- style is customizable -->
-  <div class="image">
+  	<div class="image">
 		<figure class="first">
 			<div class="front"> "your custom layout here" </div>
 			<div class="back"> "your custom layout here" </div>
