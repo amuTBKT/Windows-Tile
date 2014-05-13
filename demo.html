@@ -1,6 +1,7 @@
 <!doctype html>
 <html>
 <head>
+<!-- css stylesheet -->
 <link rel="stylesheet" type="text/css" href="css/tile.css">
 </head>
 <body style="background: black;">
@@ -36,15 +37,15 @@
 <script type="text/javascript" src="js/tile.js"></script>
 
 <script type="text/javascript">
+
 	var img1 = ["images/tile1.png", "images/tile2.png", "images/tile3.png", "images/tile4.png", "images/sstile0.png", "images/sstile1.png", "images/sstile2.png", "images/sstile3.png"]; 
-	var img2 = ["images/sstile0.png", "images/sstile1.png", "images/sstile2.png", "images/sstile3.png"];
-	var img3 = ["images/sstile.png", "images/stile.png"];
+	var img2 = ["images/sstile.png", "images/stile.png"];
 
 	$('#mTile').loadEntireTile({type:"multi", animDelay:2000}, img1);
 	
-	$('#sTile').loadSingleTile({auto:true, text:"Single Tile", animDelay:3000}, 2, img3);
+	$('#sTile').loadSingleTile({auto:true, text:"Single Tile", animDelay:3000}, 2, img2);
 
-	$('#cTile').loadSingleTile({auto:false, text:"Custom Tile", animDelay:2000}, 2, img2).loadSingleTile({auto:false, text:"Custom Tile", animDelay:2000}, 1, img1);
+	$('#cTile').loadSingleTile({auto:false, text:"Custom Tile", animDelay:2000}, 2, img2).loadSingleTile({auto:false, text:"Custom Tile", animDelay:2000}, 1, img2);
 
 </script>
 

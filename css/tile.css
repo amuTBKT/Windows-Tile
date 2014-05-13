@@ -5,6 +5,9 @@
 
 	-webkit-user-select: none;
 	-webkit-transform-origin: 50% 50%;
+
+	user-select: none;
+	transform-origin: 50% 50%;
 }
 
 .tile .image{
@@ -13,6 +16,7 @@
 	z-index: 7;
 
 	-webkit-transform: perspective(600px);
+	transform: perspective(600px);
 }
 
 .tile .image figure{
@@ -24,6 +28,9 @@
 
 	-webkit-transform-style: preserve-3d;
 	-webkit-transition: -webkit-transform 2s;
+
+	transform-style: preserve-3d;
+	transition: transform 2s;
 }
 
 /*----- for more than one image tile -----*/
@@ -62,7 +69,9 @@
 	position: absolute;
 	width: 100%;
 	height: 100%;
+
 	-webkit-backface-visibility: hidden;
+	backface-visibility: hidden;
 }
 
 .tile .image figure .front{
@@ -73,7 +82,9 @@
 .tile .image figure .back{
 	background: #aaa;
 	background-size: 100%;
+
 	-webkit-transform: rotateX(180deg);
+	transform: rotateX(180deg);
 }
 
 .tile .title{
@@ -92,31 +103,21 @@
 }
 
 .rotateX{
-	/*-webkit-animation: rotX 2s;
-	-webkit-animation-fill-mode: forwards;*/
 	-webkit-transform: rotateX(-180deg);
+	transform: rotateX(-180deg);
 }
 
 .rotateXX{
-	-webkit-transform: rotateX(-360deg);	
+	-webkit-transform: rotateX(-360deg);
+	transform: rotateX(-360deg);	
 }
 
 .rotateY{
-	/*-webkit-animation: rotY 2s;
-	-webkit-animation-fill-mode: forwards;*/
 	-webkit-transform: rotateY(180deg);
+	transform: rotateY(180deg);
 }
 
 .rotateYY{
 	-webkit-transform: rotateY(360deg);	
-}
-
-@-webkit-keyframes rotX{
-	0% 		{-webkit-transform: rotateX(0deg);}
-	100%	{-webkit-transform: rotateX(180deg);}
-}
-
-@-webkit-keyframes rotY{
-	0% 		{-webkit-transform: rotateY(0deg);}
-	100%	{-webkit-transform: rotateY(180deg);}
+	transform: rotateY(360deg);
 }

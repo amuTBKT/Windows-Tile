@@ -1,5 +1,5 @@
 #Windows tiles
-simple to use windows tile like animations for your website
+simple to use windows tile animations for your website
 
 ## Usage:
 include the plugin as:
