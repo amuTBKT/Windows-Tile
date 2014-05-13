@@ -1,5 +1,6 @@
 ;(function($){
 
+	// default configutrations
 	var defaults = {
 		auto: true,
 		type: "single",
@@ -7,6 +8,7 @@
 		animDelay: 1000
 	};
 
+	// objects cotrolling all the functionality
 	function Tile(element, options){
 		this.config = $.extend({}, defaults, options);
 		this.element = $(element);
@@ -15,11 +17,11 @@
 		this.isSingle = true;
 		this.interval = null;
 		this.startPosition = -1;
-		this.tileArray = [];
-		this.isAnimating = false;
+		this.tileArray = [];  							// contains all the <figure/> nodes present in our layout
 		this.init();
 	}
 
+	// initializing the object (occurs each time the plugin method is called)
 	Tile.prototype.init = function(){
 		if (this.config.auto){
 			if (this.config.type == "multi"){
@@ -42,7 +44,7 @@
 				this.tileArray[i] = fig;
 			}
 			var titleDiv = $('<div/>').addClass('title').appendTo(this.element);
-			$('<p/>', {text: this.config.text}).appendTo(titleDiv);
+			var title = $('<p/>', {text: this.config.text}).appendTo(titleDiv);
 		}
 		else{
 			var htmlEl = this.element[0];
@@ -61,8 +63,12 @@
 		}
 	};
 
+	/*
+	*
+	*@param frontImage image for front tile
+	*@param backImage image for back tile
+	*/
 	Tile.prototype.setTiles = function(frontImage, backImage){
-		this.isAnimating = false;
 		var i;
 		for (i = 0; i < this.tileArray.length; i++){
 			if (frontImage){
@@ -77,27 +83,25 @@
 		}
 	};
 
+	/*
+	*@param imageArray array of images to be loaded on the tile
+	*/
 	Tile.prototype.loadTiles = function(imageArray){
-		this.isAnimating = true;
 		this.startPosition = loadTiles(this.tileArray, imageArray, this.mode, this.startPosition, this.interval, this.config.animDelay);
 	};
 
+	/*
+	*@param tileNo which tile to load image on
+	*/
 	Tile.prototype.loadTile = function(tileNo, image){
-		var tempTileArray = [];
+		var tempTileArray = [];				// array storing the tile on which method is called  
 		tempTileArray[0] = this.tileArray[Math.min(tileNo, this.tileArray.length)];
 		if (!this.isSingle){
-			this.isAnimating = true;
 			loadTiles(tempTileArray, image, this.mode, -1, this.interval, this.config.animDelay);
 		}
 		else {
-			this.isAnimating = true;
 			loadTiles(this.tileArray, image, this.mode, this.startPosition, this.interval, this.config.animDelay);
 		}
-	};
-
-	Tile.prototype.stopAnimation = function(){
-		this.isAnimating = false;
-		this.interval = clearTimeout(this.interval);
 	};
 
 	function loadTiles(tileArray, imageArray, mode, pos, interval, animDelay){
@@ -174,35 +178,31 @@
 
 	//////////////// plugin methods ////////////////
 
+	// to load the image on front and back of the tile without animation
 	$.fn.setTile = function(options, frontImageArray, backImageArray){
 		return this.each(function(){
 			var tile = new Tile(this, options);
           	tile.setTiles(frontImageArray, backImageArray);
-          	$(this).click(function(){
-				tile.stopAnimation();
-			});
 		});
 	};
 
+	// to load images in given imageArray
 	$.fn.loadEntireTile = function(options, imageArray){
 		return this.each(function(){
 			var tile = new Tile(this, options);
 			tile.loadTiles(imageArray);
-			$(this).click(function(){
-				tile.stopAnimation();
-			});
 		});
 	};
 
+	// to load image on a give tile number
 	$.fn.loadSingleTile = function(options, tileNo, imageArray){
 		return this.each(function(){
 			var tile = new Tile(this, options);
 			if (tileNo > -1 && imageArray) tile.loadTile(tileNo, imageArray);
-			$(this).click(function(){
-				tile.stopAnimation();
-			});
 		});
 	};
+
+	// if images in imageArray is more than number of tiles in tileArray then animation will play for all the images in imageArray
 
 	////////////////////////////////////////////////
 

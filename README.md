@@ -5,7 +5,7 @@ simple to use windows tile like animations for your website
 include the plugin as:
 ````html
 <!-- js scripts -->
-<script language="text/javascript" src="jquery-1.11.0.min.js">
+<script language="text/javascript" src="jquery.js">
 <script language="text/javascript" src="tile.js">
 
 <!-- css script -->
