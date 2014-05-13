@@ -36,7 +36,7 @@ var defaults = {
 <div id="autoTile" style="width:200px; height:200px; top:10px; left:10px;">  <!-- style is customizable -->
 ````
 
-''''javascript
+````javascript
 // auto = true is default configuration 
 $('#autTile').setTile({type:"multi", auto:true, text:"Auto Tile", animDelay:2000}, frontImageArray, backImageArray);
 
