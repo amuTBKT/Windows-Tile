@@ -76,7 +76,11 @@ $('#customTile').loadEntireTile({auto:false, text:"Custom Tile", animDelay:1000}
 tile.css can be further customized for using any number of image tiles
 and accordingly changes can be made in tile.jss for using more images for tile
 
+## Future improvements
+a php script can be attached to split a image into 4 image to pass as imageArray giving windows tile like animation similar to that of loading a persons image
+
 
 ## Bugs:
-intervals have to be used for subsequent loading of images before completion of current animation and would otherwise
+*after using the plugin methods on an element it is necessary to set "auto = false" when using other methods on the same element
+*intervals have to be used for subsequent loading of images before completion of current animation and would otherwise
 try to ovveride the current animation and both would occur simultaneously
